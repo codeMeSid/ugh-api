@@ -11,7 +11,7 @@ import { routeManager } from "./utils/routeManager";
 import { testerRoutes } from "./routes/tester";
 import { interceptRequest } from "./middlewares/interceptRequest";
 import { responseToJson } from "./middlewares/responseToJson";
-import { errorHandler } from "./middlewares/errorHandler";
+import { CustomError, errorHandler } from "./middlewares/errorHandler";
 import { userRoutes } from "./routes/user";
 
 async function startServer() {
@@ -31,6 +31,9 @@ async function startServer() {
     routeManager.registerRoute("/test", testerRoutes);
     routeManager.registerRoute("/user", userRoutes);
     app.use("/api/ugh/sb", routeManager.generateRoutes());
+    app.use("*", function (req, res) {
+      throw new CustomError("NotFoundError", ["Api Path Not found"]);
+    });
     // servers
     app.use(errorHandler);
     await mongoConnect(MONGO_URI);
