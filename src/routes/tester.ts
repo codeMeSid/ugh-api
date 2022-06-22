@@ -17,7 +17,6 @@ export const testerRoutes: Array<ApiRoute> = [
         ughId: faker.internet.avatar(),
       });
       user.profile.password = await encrypt("password");
-      await user.save();
       res.json(user);
     },
   },
