@@ -93,9 +93,9 @@ const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
       ],
     },
     onDate: {
-      create: { type: Date, default: new Date() },
-      active: { type: Date },
-      update: { type: Date, default: new Date() },
+      created: { type: Date, default: new Date() },
+      activated: { type: Date },
+      updated: { type: Date, default: new Date() },
       banned: { type: Date },
       verified: { type: Date },
     },

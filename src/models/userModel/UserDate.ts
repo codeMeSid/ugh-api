@@ -1,7 +1,7 @@
 export type UserOnDate = {
-  create: Date;
-  active: Date;
-  update: Date;
+  created: Date;
+  activated: Date;
+  updated: Date;
   banned: Date;
   verified: Date;
 };
