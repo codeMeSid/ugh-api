@@ -12,7 +12,7 @@ import { testerRoutes } from "./routes/tester";
 import { interceptRequest } from "./middlewares/interceptRequest";
 import { responseToJson } from "./middlewares/responseToJson";
 import { CustomError, errorHandler } from "./middlewares/errorHandler";
-import { userRoutes } from "./routes/user";
+import { userRoutes } from "./routes/UserRoute";
 
 async function startServer() {
   try {
