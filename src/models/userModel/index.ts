@@ -1,9 +1,13 @@
+import dayjs from "dayjs";
 import mongoose from "mongoose";
+import { otpGenerator } from "../../utils/otpGenerator";
 import { UserOnDate } from "./UserDate";
 import { UserHistory } from "./UserHistory";
 import { UserProfile } from "./UserProfile";
+import { UserRole } from "./UserRole";
 import { UserSocialType } from "./UserSocialType";
 import { UserStatus } from "./UserStatus";
+import { UserVerification } from "./UserVerfication";
 import { UserWallet } from "./UserWallet";
 
 interface UserAttrs {
@@ -15,15 +19,22 @@ interface UserAttrs {
 }
 export interface UserDocument extends mongoose.Document {
   profile: UserProfile;
+  role: UserRole;
   wallet: UserWallet;
   history: UserHistory;
   onDate: UserOnDate;
+  verfication: UserVerification;
 }
 interface UserModel extends mongoose.Model<UserDocument> {
   build(attrs: UserAttrs): UserDocument;
 }
 const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
   {
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      default: UserRole.PLAYER,
+    },
     profile: {
       name: { type: String, required: true },
       status: {
@@ -99,6 +110,12 @@ const UserSchema = new mongoose.Schema<UserDocument, UserModel>(
       banned: { type: Date },
       verified: { type: Date },
     },
+    verfication: {
+      otp: Number,
+      verifyBy: { type: Date, default: dayjs().add(15, "minutes") },
+      resetCode: { type: Number },
+      resetBy: { type: Date },
+    },
   },
   {
     toJSON: {
@@ -120,6 +137,7 @@ UserSchema.statics.build = (attrs: UserAttrs) => {
   user.profile.email = attrs.email;
   user.profile.dob = attrs.dateOfBirth;
   user.profile.mobile = attrs.mobile;
+  user.verfication.otp = otpGenerator();
   return user;
 };
 

@@ -23,8 +23,22 @@ export const userAddRoute: ApiRoute = {
         throw new CustomError("BadRequestError", ["less than 16 years old"]);
       else return true;
     }),
-    body("email").optional(true).isEmail(),
-    body("mobile").isLength({ min: 10, max: 10 }).withMessage("Required"),
+    body("email")
+      .optional(true)
+      .isEmail()
+      .custom(async (value) => {
+        if (value) {
+          const user = await Users.findOne({ "profile.email": value });
+          if (user)
+            throw new CustomError("BadRequestError", ["already exists"]);
+        } else return true;
+      }),
+    body("mobile")
+      .isLength({ min: 10, max: 10 })
+      .custom(async (value) => {
+        const user = await Users.findOne({ "profile.mobile": value });
+        if (user) throw new CustomError("BadRequestError", ["already exists"]);
+      }),
     body("password")
       .isLength({ min: 8, max: 16 })
       .withMessage("required to secure account"),
@@ -35,6 +49,6 @@ export const userAddRoute: ApiRoute = {
     const user = Users.build({ name, dateOfBirth, ughId, email, mobile });
     user.profile.password = await encrypt(password);
     await user.save();
-    res.json({ user });
+    res.json({ otp: user.verfication.otp });
   },
 };
