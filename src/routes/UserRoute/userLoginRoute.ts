@@ -20,13 +20,10 @@ export const userLoginRoute: ApiRoute = {
     if (!isPasswordMatch)
       throw new CustomError("BadRequestError", ["Invalid Credentials"]);
     res.json({
-      success: true,
-      payload: {
-        userCredentials: {
-          key: user.id,
-          ughId: user.profile.ughId,
-          role: user.role,
-        },
+      userCredentials: {
+        key: user.id,
+        ughId: user.profile.ughId,
+        role: user.role,
       },
     });
   },
