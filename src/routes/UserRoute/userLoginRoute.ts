@@ -15,11 +15,7 @@ export const userLoginRoute: ApiRoute = {
     else if (email) filter = { "profile.email": email };
     else if (mobile) filter = { "profile.mobile": mobile };
     const user = await Users.findOne(filter);
-    if (!user)
-      return res.json({
-        success: true,
-        payload: { isRegistrationRequired: true },
-      });
+    if (!user) return res.json({ isRegistrationRequired: true });
     const isPasswordMatch = await decrypt(password, user.profile.password);
     if (!isPasswordMatch)
       throw new CustomError("BadRequestError", ["Invalid Credentials"]);
