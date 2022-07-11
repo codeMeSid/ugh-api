@@ -19,4 +19,10 @@ export const config = convict({
     arg: "MONGO_URI",
     env: "MONGO_URI",
   },
+  SECRET_KEY: {
+    doc: "secret for authentication",
+    default: "qwerty..//!@#$",
+    arg: "SECRET_KEY",
+    env: "SECRET_KEY",
+  },
 });

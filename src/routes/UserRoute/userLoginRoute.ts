@@ -1,7 +1,7 @@
 import { body } from "express-validator";
 import { ApiRoute } from "../../utils/routeManager";
 import { Users } from "../../models/userModel";
-import { decrypt } from "../../utils/crypt";
+import { decrypt, generateAuthToken } from "../../utils/crypt";
 import { CustomError } from "../../middlewares/errorHandler";
 
 export const userLoginRoute: ApiRoute = {
@@ -21,9 +21,7 @@ export const userLoginRoute: ApiRoute = {
       throw new CustomError("BadRequestError", ["Invalid Credentials"]);
     res.json({
       userCredentials: {
-        key: user.id,
-        ughId: user.profile.ughId,
-        role: user.role,
+        key: generateAuthToken({ key: `${user._id}` }),
       },
     });
   },

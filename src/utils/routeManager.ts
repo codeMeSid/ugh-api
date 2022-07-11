@@ -1,6 +1,15 @@
 import { NextFunction, Request, Response, Router } from "express";
+import { UserDocument } from "../models/userModel";
 
-export type Controller = (req: Request, res: Response, nextFunc: NextFunction) => any;
+interface UGHRequest extends Request {
+  currentUser?: UserDocument;
+}
+
+export type Controller = (
+  req: UGHRequest,
+  res: Response,
+  nextFunc: NextFunction
+) => any;
 export type ApiRoute = {
   url: string;
   method: "get" | "post" | "put" | "delete";
