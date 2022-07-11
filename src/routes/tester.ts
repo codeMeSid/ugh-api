@@ -13,4 +13,14 @@ export const testerRoutes: Array<ApiRoute> = [
       res.json({ msg: "Done" });
     },
   },
+  {
+    url: "/delete/user/:ughId",
+    method: "get",
+    middlewares: [],
+    controller: async (req, res) => {
+      const { ughId } = req.params;
+      await Users.deleteOne({ "profile.ughId": ughId });
+      res.json({ msg: "Done" });
+    },
+  },
 ];
