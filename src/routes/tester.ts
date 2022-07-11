@@ -5,19 +5,12 @@ import { Users } from "../models/userModel";
 
 export const testerRoutes: Array<ApiRoute> = [
   {
-    url: "/add/user",
+    url: "/delete/user/all",
     method: "get",
     middlewares: [],
     controller: async (req, res) => {
-      const user = Users.build({
-        name: faker.name.firstName(),
-        dateOfBirth: faker.date.past(20),
-        email: faker.internet.email(),
-        mobile: faker.phone.number("##########"),
-        ughId: faker.internet.avatar(),
-      });
-      user.profile.password = await encrypt("password");
-      res.json(user);
+      await Users.deleteMany();
+      res.json({ msg: "Done" });
     },
   },
 ];
