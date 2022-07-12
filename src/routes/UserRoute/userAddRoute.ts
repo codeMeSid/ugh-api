@@ -40,7 +40,7 @@ export const userAddRoute: ApiRoute = {
         if (user) throw new CustomError("BadRequestError", ["already exists"]);
       }),
     body("password")
-      .isLength({ min: 8, max: 16 })
+      .isLength({ min: 8, max: 32 })
       .withMessage("required to secure account"),
     validateHandler(),
   ],
